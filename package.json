@@ -1,5 +1,5 @@
 {
-  "name": "gcp-config",
+  "name": "gcp-config-lazy",
   "version": "0.1.0",
   "description": "GCP config store with Firestore and Secret Manager",
   "main": "index.js",
