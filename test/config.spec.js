@@ -16,16 +16,27 @@ describe('Config', function () {
   const port = 9876
   let emu, repos, store
 
+  /**
+   * @return {boolean}
+   */
+  function isCloudBuild () {
+    return process.env.PROJECT_ID ? true : false // eslint-disable-line no-unneeded-ternary
+  }
+
   before(async () => {
-    emu = EmulatorController.invoke(host, port)
-    process.env.FIRESTORE_EMULATOR_HOST = `${host}:${port}`
-    await sleep(2500)
-    repos = RepositoryCreator.create('dummy', { projectId: 'test-project' })
+    if (!isCloudBuild()) {
+      emu = EmulatorController.invoke(host, port)
+      process.env.FIRESTORE_EMULATOR_HOST = `${host}:${port}`
+      await sleep(2500)
+    }
+    repos = RepositoryCreator.create('dummy', { projectId: process.env.PROJECT_ID || 'test-project' })
     store = new FirestoreReader(repos)
   })
   after(async () => {
-    await emu.kill()
-    delete process.env.FIRESTORE_EMULATOR_HOST
+    if (!isCloudBuild()) {
+      await emu.kill()
+      delete process.env.FIRESTORE_EMULATOR_HOST
+    }
   })
 
   let config
