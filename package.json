@@ -27,6 +27,8 @@
   },
   "dependencies": {
     "@google-cloud/secret-manager": "^2.1.0",
-    "gcp-firestore-simple-repository": "https://github.com/colorfulcompany/node-gcp-firestore-simple-repository#0.2.3"
+    "cosmiconfig": "^6.0.0",
+    "gcp-firestore-simple-repository": "https://github.com/colorfulcompany/node-gcp-firestore-simple-repository#0.2.3",
+    "lodash.get": "^4.4.2"
   }
 }
