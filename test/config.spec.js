@@ -1,12 +1,36 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, afterEach, before, after */
 
+const EmulatorController = require('gcp-firestore-simple-repository/src/emulator-controller')
+const sleep = require('sleep-promise')
 const assert = require('power-assert')
+
+const { RepositoryCreator } = require('gcp-firestore-simple-repository')
+const FirestoreReader = require('firestore-reader')
 
 const Config = require('config')
 
-describe('Config', () => {
+describe('Config', function () {
+  this.timeout(5000)
+
+  const host = '127.0.0.1'
+  const port = 9876
+  let emu, repos, store
+
+  before(async () => {
+    emu = EmulatorController.invoke(host, port)
+    process.env.FIRESTORE_EMULATOR_HOST = `${host}:${port}`
+    await sleep(2500)
+    repos = RepositoryCreator.create('dummy', { projectId: 'test-project' })
+    store = new FirestoreReader(repos)
+  })
+  after(async () => {
+    await emu.kill()
+    delete process.env.FIRESTORE_EMULATOR_HOST
+  })
+
   let config
-  beforeEach(async () => { config = await Config.init('dummy') })
+  beforeEach(async () => { config = await Config.init('dummy', { store }) })
+  afterEach(async () => { await repos.clear() })
 
   describe('asyncFunc', () => {
     it('resolved', async () => {
@@ -24,6 +48,24 @@ describe('Config', () => {
     it('thru', async () => {
       assert.equal(await config.get('key.immediate'), 'immediate')
       assert.equal(typeof (await config.get('key', 'immediate')), 'string')
+    })
+  })
+  describe('firestore doc', () => {
+    describe('exists', () => {
+      let doc
+      beforeEach(async () => {
+        doc = { doc: 'document' }
+        const docRef = repos.col.doc('doc')
+        await docRef.set(doc)
+      })
+      it('return object', async () => {
+        assert.deepEqual(await config.get('key.doc'), doc)
+      })
+    })
+    describe('not exist', () => {
+      it('fallback to string', async () => {
+        await assert.equal(await config.get('key.doc'), 'not exist')
+      })
     })
   })
 })

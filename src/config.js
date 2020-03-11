@@ -11,10 +11,11 @@ class Config {
 
   /**
    * @param {string} moduleName
+   * @param {object} opts
    * @return {object}
    */
-  static async init (moduleName) {
-    return new this(await FileLoader.load(moduleName))
+  static async init (moduleName, opts) {
+    return new this(await FileLoader.load(moduleName, opts))
   }
 
   /**

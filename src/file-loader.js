@@ -3,12 +3,17 @@ const { cosmiconfig } = require('cosmiconfig')
 class FileLoader {
   /**
    * @param {string} moduleName
+   * @param {object} opts
    * @return {object}
    */
-  static async load (moduleName) {
+  static async load (moduleName, opts = {}) {
     const explorer = cosmiconfig(moduleName)
 
-    return (await explorer.load(this.path(moduleName))).config
+    const config = (await explorer.load(this.path(moduleName))).config
+
+    return (config.constructor.name.match(/Function/))
+      ? config(opts)
+      : config
   }
 
   /**
