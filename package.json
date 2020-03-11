@@ -23,7 +23,9 @@
     "mocha": "^7.1.0",
     "npm-run-all": "^4.1.5",
     "power-assert": "^1.6.1",
-    "sinon": "^9.0.0"
+    "sinon": "^9.0.0",
+    "sleep-promise": "^8.0.1",
+    "tree-kill": "^1.2.2"
   },
   "dependencies": {
     "@google-cloud/secret-manager": "^2.1.0",
