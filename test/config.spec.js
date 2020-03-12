@@ -56,6 +56,11 @@ describe('Config', function () {
         assert.equal(typeof (await config.get('key.func')), 'string')
       })
     })
+    describe('with args', () => {
+      it('passed', async () => {
+        assert.equal(await config.get('key.funcWithArg', 'arg'), 'arg')
+      })
+    })
   })
   describe('immediate', () => {
     it('thru', async () => {
