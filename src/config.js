@@ -26,7 +26,7 @@ class Config {
   async get (path, subpath = undefined) {
     const value = dig(this.config, path)
 
-    return value.constructor.name.match(/Function/)
+    return (value && value.constructor.name.match(/Function/))
       ? value.call(this, subpath)
       : value
   }
