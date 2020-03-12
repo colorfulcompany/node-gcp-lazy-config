@@ -46,31 +46,46 @@ describe('Config', function () {
   describe('asyncFunc', () => {
     it('resolved', async () => {
       assert.equal(await config.get('key.asyncFunc'), 'async')
-      assert.equal(typeof (await config.get('key', 'asyncFunc')), 'string')
+      assert.equal(typeof (await config.get('key.asyncFunc')), 'string')
     })
   })
   describe('func', () => {
-    it('called', async () => {
-      assert.equal(await config.get('key.func'), 'val')
-      assert.equal(typeof (await config.get('key', 'func')), 'string')
+    describe('no args', () => {
+      it('called', async () => {
+        assert.equal(await config.get('key.func'), 'val')
+        assert.equal(typeof (await config.get('key.func')), 'string')
+      })
+    })
+    describe('with args', () => {
+      it('passed', async () => {
+        assert.equal(await config.get('key.funcWithArg', 'arg'), 'arg')
+      })
     })
   })
   describe('immediate', () => {
     it('thru', async () => {
       assert.equal(await config.get('key.immediate'), 'immediate')
-      assert.equal(typeof (await config.get('key', 'immediate')), 'string')
+      assert.equal(typeof (await config.get('key.immediate')), 'string')
     })
   })
   describe('firestore doc', () => {
     describe('exists', () => {
       let doc
       beforeEach(async () => {
-        doc = { doc: 'document' }
+        doc = {
+          key: 'first level',
+          sub: {
+            leaf: 'leaf'
+          }
+        }
         const docRef = repos.col.doc('doc')
         await docRef.set(doc)
       })
-      it('return object', async () => {
+      it('no path given, return whole object', async () => {
         assert.deepEqual(await config.get('key.doc'), doc)
+      })
+      it('path given, return sub tree', async () => {
+        assert.deepEqual(await config.get('key.doc', 'sub.leaf'), 'leaf')
       })
     })
     describe('not exist', () => {

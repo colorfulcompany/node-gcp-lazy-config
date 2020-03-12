@@ -8,13 +8,16 @@ class FirestoreReader {
 
   /**
    * @param {string} id
+   * @param {string} path
    * @return {object|undefined}
    */
-  async get (id) {
+  async get (id, path = undefined) {
     const snap = await this.repos.find(id)
 
     return (snap)
-      ? snap.data()
+      ? ((path)
+        ? snap.get(path)
+        : snap.data())
       : undefined
   }
 }

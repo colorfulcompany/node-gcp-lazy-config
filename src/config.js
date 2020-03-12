@@ -19,16 +19,15 @@ class Config {
   }
 
   /**
-   * @param {Array} paths
+   * @param {string} path
+   * @param {string} subpath
    * @return {object}
    */
-  async get (...paths) {
-    const value = (paths.length > 1)
-      ? dig(this.config, paths)
-      : dig(this.config, paths[0])
+  async get (path, subpath = undefined) {
+    const value = dig(this.config, path)
 
     return value.constructor.name.match(/Function/)
-      ? value.call()
+      ? value.call(this, subpath)
       : value
   }
 }

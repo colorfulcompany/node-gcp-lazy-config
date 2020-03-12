@@ -4,7 +4,8 @@ module.exports = ({ store }) => {
       immediate: 'immediate',
       func: () => 'val',
       asyncFunc: async () => 'async',
-      doc: async () => await store.get('doc') || 'not exist'
+      funcWithArg: (path) => path,
+      doc: async (path) => await store.get('doc', path) || 'not exist'
     }
   }
 }
