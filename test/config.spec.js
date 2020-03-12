@@ -68,6 +68,9 @@ describe('Config', function () {
       assert.equal(await config.get('key.immediate'), 'immediate')
       assert.equal(typeof (await config.get('key.immediate')), 'string')
     })
+    it('with subpath', async () => {
+      assert.equal(await config.get('key', 'immediate'), 'immediate')
+    })
   })
   describe('firestore doc', () => {
     describe('exists', () => {

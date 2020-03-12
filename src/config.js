@@ -28,7 +28,7 @@ class Config {
 
     return (value && value.constructor.name.match(/Function/))
       ? value.call(this, subpath)
-      : value
+      : ((subpath && value.constructor.name === 'Object') ? dig(value, subpath) : value)
   }
 }
 
