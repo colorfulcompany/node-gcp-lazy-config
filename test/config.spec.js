@@ -46,19 +46,21 @@ describe('Config', function () {
   describe('asyncFunc', () => {
     it('resolved', async () => {
       assert.equal(await config.get('key.asyncFunc'), 'async')
-      assert.equal(typeof (await config.get('key', 'asyncFunc')), 'string')
+      assert.equal(typeof (await config.get('key.asyncFunc')), 'string')
     })
   })
   describe('func', () => {
-    it('called', async () => {
-      assert.equal(await config.get('key.func'), 'val')
-      assert.equal(typeof (await config.get('key', 'func')), 'string')
+    describe('no args', () => {
+      it('called', async () => {
+        assert.equal(await config.get('key.func'), 'val')
+        assert.equal(typeof (await config.get('key.func')), 'string')
+      })
     })
   })
   describe('immediate', () => {
     it('thru', async () => {
       assert.equal(await config.get('key.immediate'), 'immediate')
-      assert.equal(typeof (await config.get('key', 'immediate')), 'string')
+      assert.equal(typeof (await config.get('key.immediate')), 'string')
     })
   })
   describe('firestore doc', () => {
