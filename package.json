@@ -3,7 +3,7 @@
     "node": ">= 10.10.0 < 12"
   },
   "name": "gcp-config-lazy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GCP config store with Firestore and Secret Manager",
   "main": "index.js",
   "scripts": {
