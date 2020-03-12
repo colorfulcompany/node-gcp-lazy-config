@@ -22,6 +22,14 @@ class SecretReader {
 
   /**
    * @param {string} secret
+   * @return {string}
+   */
+  async get (secret) {
+    return this.latest(secret)
+  }
+
+  /**
+   * @param {string} secret
    * @return {string|boolean}
    */
   async latest (secret) {
