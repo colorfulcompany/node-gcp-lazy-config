@@ -6,6 +6,7 @@ const assert = require('power-assert')
 
 const { RepositoryCreator } = require('gcp-firestore-simple-repository')
 const FirestoreReader = require('firestore-reader')
+const SecretReader = require('secret-reader')
 
 const Config = require('config')
 
@@ -92,6 +93,22 @@ describe('Config', function () {
       it('fallback to string', async () => {
         await assert.equal(await config.get('key.doc'), 'not exist')
       })
+    })
+  })
+  describe('secret manager', () => {
+    let secret
+    beforeEach(async () => {
+      if (isCloudBuild()) {
+        secret = new SecretReader({ projectId: process.env.PROJECT_ID })
+        config = await Config.init('dummy', { store, secret })
+      }
+    })
+    it('common interface', async function () {
+      if (isCloudBuild()) {
+        assert.equal(await config.get('credential'), 'value')
+      } else {
+        this.skip()
+      }
     })
   })
 })
