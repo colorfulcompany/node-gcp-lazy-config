@@ -72,12 +72,20 @@ describe('Config', function () {
     describe('exists', () => {
       let doc
       beforeEach(async () => {
-        doc = { doc: 'document' }
+        doc = {
+          key: 'first level',
+          sub: {
+            leaf: 'leaf'
+          }
+        }
         const docRef = repos.col.doc('doc')
         await docRef.set(doc)
       })
-      it('return object', async () => {
+      it('no path given, return whole object', async () => {
         assert.deepEqual(await config.get('key.doc'), doc)
+      })
+      it('path given, return sub tree', async () => {
+        assert.deepEqual(await config.get('key.doc', 'sub.leaf'), 'leaf')
       })
     })
     describe('not exist', () => {
