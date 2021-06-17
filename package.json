@@ -33,7 +33,7 @@
   "dependencies": {
     "@google-cloud/secret-manager": "^2.1.0",
     "cosmiconfig": "^6.0.0",
-    "gcp-firestore-simple-repository": "https://github.com/colorfulcompany/node-gcp-firestore-simple-repository#0.2.3",
+    "gcp-firestore-simple-repository": "https://github.com/colorfulcompany/node-gcp-firestore-simple-repository#0.2.5",
     "lodash.get": "^4.4.2",
     "minimist": "1.2.5"
   }
