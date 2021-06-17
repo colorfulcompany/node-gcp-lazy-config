@@ -11,7 +11,7 @@ const SecretReader = require('secret-reader')
 const Config = require('config')
 
 describe('Config', function () {
-  this.timeout(5000)
+  this.timeout(20000)
 
   const host = '127.0.0.1'
   const port = 9876
