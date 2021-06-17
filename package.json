@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": ">= 10.10.0 < 12"
+    "node": ">= 10.10.0"
   },
   "name": "gcp-config-lazy",
   "version": "0.1.2",
